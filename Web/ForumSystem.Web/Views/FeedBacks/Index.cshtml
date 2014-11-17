@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ForumSystem.Web.ViewModels.FeedBack.FeedBackListItemViewModel>
+@{
+    ViewBag.Title = "FeedBacks";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <td>Author</td>
+                <td>Title</td>
+                <td>Content</td>
+                <td>Created On</td>
+            </tr>
+        </thead>
+        <tbody>
+@foreach (var feedback in Model)
+{
+            <tr>
+                <td>@feedback.Author</td>
+                <td>@feedback.Title</td>
+                <td>@feedback.Content</td>
+                <td>@feedback.CreatedOn</td>
+            </tr>
+}
+        </tbody>
+    </table>
+
+<ul class="pagination">
+    @for (int i = 1; i <= ViewBag.Pages; i++)
+    {
+        
+        <li>
+            <a href="@Url.Action("Index", new { id = i })">@i</a>
+        </li>
+    }
+</ul>

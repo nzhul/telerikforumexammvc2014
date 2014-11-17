@@ -1,0 +1,6 @@
+﻿@model ForumSystem.Web.ViewModels.FeedBack.FeedBackDisplayViewModel
+@{
+    ViewBag.Title = Model.Title;
+}
+<h1>@ViewBag.Title</h1>
+@Html.Raw(Model.Content)

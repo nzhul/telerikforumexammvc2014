@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<div class="alert alert-dismissable alert-warning">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <h4>Warning!</h4>
+    <p>The Navigation Links are broken for this page! Please click "Forum System" if you want to get back.</p>
+</div>
+<h2>Administration</h2>
+
+<script src="~/Scripts/KendoUI/jquery.min.js"></script>
+
+@(Html.Kendo()
+.Grid<ForumSystem.Web.Areas.Administration.Models.PostViewModelKendo>()
+.Name("comments-grid")
+.Pageable()
+.Sortable()
+.Editable(edit =>
+    {
+        edit.Mode(GridEditMode.InLine);
+    })
+.ToolBar(tool =>
+    {
+        tool.Create();
+    })
+.Columns(col =>
+{
+    col.Bound(m => m.Id);
+    col.Bound(m => m.AuthorName);
+    col.Bound(m => m.Title);
+    col.Bound(m => m.Content);
+    col.Bound(m => m.CreatedOn);
+    col.Bound(m => m.ModifiedOn);
+    col.Bound(m => m.IsDeleted);
+    col.Command(com =>
+        {
+            com.Edit();
+            com.Destroy();
+        }).Title("Commands");
+})
+.DataSource(data =>
+{
+    data.Ajax()
+        .ServerOperation(true)
+        .Model(m =>
+        {
+            m.Id("Id");
+            m.Field(com => com.AuthorName).Editable(false);
+            m.Field(com => com.Id).Editable(false);
+            m.Field(com => com.CreatedOn).Editable(false);
+            m.Field(com => com.ModifiedOn).Editable(false);
+            m.Field(com => com.IsDeleted).Editable(false);
+        })
+        .Read("ReadAllPosts", "Home")
+        .Create("CreatePost", "Home")
+        .Update("UpdatePost", "Home")
+        .Destroy("DestroyPost", "Home")
+        .PageSize(5)
+        .Sort(sort =>
+        {
+            sort.Add(post => post.CreatedOn).Descending();
+        });
+}))
